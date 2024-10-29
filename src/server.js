@@ -2,6 +2,7 @@ import http from "node:http"
 
 import { bodyConstructor } from "./middlewares/bodyConstructor.js";
 import { routes } from "./middlewares/routes.js";
+import { extractQueryParams } from "./utils/extractQueryParams.js";
 
 const PORT = 3333
 
@@ -15,7 +16,10 @@ const server = http.createServer(async (req, res) => {
   if(route) {
     const routeParams = req.url.match(route.path)
 
-    req.params = { ...routeParams.groups }
+    const { query, ...params } = routeParams.groups
+
+    req.params = params
+    req.query = query ? extractQueryParams(query) : {}
     
     return route.handler(req, res)
   }
