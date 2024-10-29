@@ -62,16 +62,17 @@ export class Database {
   update = (table, id, data) => {
     const rowIndex = this.#database[table].findIndex(row => row.id === id)
 
-    if (rowIndex > -1){
-      const { created_at, completed_at } = this.#database[table][rowIndex]
+    const { title, description } = data
 
-      this.#database[table][rowIndex] = { 
-        id,
-        ...data,
-        completed_at,
-        created_at,
-        last_updated_at: dayjs()
-      }
+    if (rowIndex > -1){
+      if (title.trim())
+        this.#database[table][rowIndex]["title"] = title
+
+      if (description.trim())
+        this.#database[table][rowIndex]["description"] = description
+
+      this.#database[table][rowIndex]["last_updated_at"] = dayjs()
+
       this.#persist()
 
       return true

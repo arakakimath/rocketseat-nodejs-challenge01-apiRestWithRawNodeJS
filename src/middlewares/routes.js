@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { Database } from "../database/database.js";
 import { buildRoutePath } from "../utils/buildRoutePath.js";
+import { bodyExtractor } from "./bodyExtractor.js";
 
 const database = new Database();
 
@@ -16,7 +17,7 @@ export const routes = [
     method: "POST",
     path: buildRoutePath("/tasks"),
     handler: (req, res) => {
-      const { title, description } = req.body;
+      const { title, description } = bodyExtractor(req)
 
       if (!title.trim() || !description.trim()) return res.writeHead(400).end()
 
@@ -46,9 +47,10 @@ export const routes = [
     path: buildRoutePath("/tasks/:id"),
     handler: (req, res) => {
       const { id } = req.params;
-      const { title, description } = req.body;
       
-      if (!title.trim() || !description.trim()) return res.writeHead(400).end()
+      const { title, description } = bodyExtractor(req)
+      
+      if (!title.trim() && !description.trim()) return res.writeHead(400).end()
 
       if (
         database.update("tasks", id, {
