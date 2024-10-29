@@ -1,0 +1,16 @@
+{
+  "name": "rocketseat-nodejs-challenge01-apirestwithrawnodejs",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --watch src/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "dayjs": "^1.11.13"
+  }
+}
